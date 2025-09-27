@@ -1,9 +1,13 @@
 const fs = require("fs");
 const path = require("path");
+const os = require("os");
 const Database = require("better-sqlite3");
 const { Pool } = require("pg");
 
-const dataDir = path.join(__dirname, "..", "data");
+// Use /tmp on platforms like Heroku where the app filesystem is read-only/ephemeral
+const dataDir = process.env.DYNO
+  ? path.join(os.tmpdir(), "noahark")
+  : path.join(__dirname, "..", "data");
 if (!fs.existsSync(dataDir)) {
   fs.mkdirSync(dataDir, { recursive: true });
 }
