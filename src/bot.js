@@ -12,6 +12,16 @@ bot.telegram.getMe().then((me) => {
   } catch (_) {}
 }).catch(() => {});
 
+// Debug middleware: log every update briefly
+bot.use(async (ctx, next) => {
+  try {
+    const chat = ctx.chat || {};
+    const text = (ctx.message && ctx.message.text) || (ctx.update && ctx.update.message && ctx.update.message.text) || "";
+    console.log(`update: type=${ctx.updateType} chat=${chat.id}(${chat.type}) text=${JSON.stringify(text)}`);
+  } catch (_) {}
+  return next();
+});
+
 function isAllowedGroup(ctx) {
   // When GROUP_ID is configured, enforce it. If not configured, allow everywhere for testing.
   if (GROUP_ID == null) return true;
