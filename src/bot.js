@@ -117,6 +117,11 @@ bot.command("arkhelp", safe(async (ctx) => {
   ];
   await ctx.reply(lines.join("\n"));
 }));
+
+// Simple health check
+bot.command("ping", safe(async (ctx) => {
+  await ctx.reply("pong");
+}));
 // List all animals and rarities
 bot.command("arklist", safe(async (ctx) => {
   if (!isAllowedGroup(ctx)) {
@@ -154,8 +159,22 @@ bot.catch((err, ctx) => {
     ctx.reply("Unexpected error. Please try again.").catch(() => {});
   }
 });
-// Start the bot
-bot.launch();
+// Start the bot (ensure polling by clearing any existing webhook)
+(async () => {
+  try {
+    await bot.telegram.deleteWebhook({ drop_pending_updates: true });
+    console.log("Webhook cleared; starting polling...");
+  } catch (e) {
+    console.warn("Failed to clear webhook (may be none)", e && e.message ? e.message : e);
+  }
+  try {
+    await bot.launch();
+    console.log("Bot launched (polling mode)");
+  } catch (e) {
+    console.error("Failed to launch bot", e);
+  }
+})();
+
 // Enable graceful stop
 process.once("SIGINT", () => bot.stop("SIGINT"));
 process.once("SIGTERM", () => bot.stop("SIGTERM"));
