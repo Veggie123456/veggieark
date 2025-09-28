@@ -51,6 +51,7 @@ if (driver === "sqlite") {
 } else {
   // Ensure base tables exist with the latest schema (Postgres)
   const ensurePgSchema = async () => {
+    try { console.log("DB driver: postgres"); } catch (_) {}
     await pgPool.query(`
       CREATE TABLE IF NOT EXISTS users (
         id SERIAL PRIMARY KEY,
