@@ -81,6 +81,7 @@ bot.command("save", safe(async (ctx) => {
     `Rarity: ${rarityLabel} · Count: x${result && result.count ? result.count : 1}`,
   ];
   await ctx.reply(lines.join("\n"));
+  try { console.log(`replied: /save → ${animal.name} x${result && result.count ? result.count : 1}`); } catch (_) {}
 }));
 
 bot.command("animals", safe(async (ctx) => {
@@ -99,6 +100,7 @@ bot.command("animals", safe(async (ctx) => {
   const lines = items.map((i) => `${i.emoji} ${i.animal} · ${i.rarity} · x${i.count}`);
   const message = `${header}:\n` + lines.join("\n");
   await ctx.reply(message);
+  try { console.log(`replied: /animals → ${lines.length} items`); } catch (_) {}
 }));
 // Help (renamed to /helpark)
 bot.command("helpark", safe(async (ctx) => {
@@ -112,6 +114,7 @@ bot.command("helpark", safe(async (ctx) => {
     "- /arkhelp — Show this help",
   ];
   await ctx.reply(lines.join("\n"));
+  try { console.log("replied: /helpark"); } catch (_) {}
 }));
 
 // Help alias: /arkhelp
@@ -126,11 +129,13 @@ bot.command("arkhelp", safe(async (ctx) => {
     "- /arkhelp — Show this help",
   ];
   await ctx.reply(lines.join("\n"));
+  try { console.log("replied: /arkhelp"); } catch (_) {}
 }));
 
 // Simple health check
 bot.command("ping", safe(async (ctx) => {
   await ctx.reply("pong");
+  try { console.log("replied: /ping"); } catch (_) {}
 }));
 // List all animals and rarities
 bot.command("arklist", safe(async (ctx) => {
@@ -160,6 +165,7 @@ bot.command("arklist", safe(async (ctx) => {
     .filter((r) => byRarity[r] && byRarity[r].length)
     .map((r) => `${rarityTitle[r]}:\n` + byRarity[r].join(", "));
   await ctx.reply(chunks.join("\n\n"));
+  try { console.log("replied: /arklist"); } catch (_) {}
 }));
 
 // Global error catcher
